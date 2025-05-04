@@ -113,6 +113,7 @@ def index():
                 last_conversation = new_conversation
 
                 # Generate therapeutic quote
+                from quotes import generate_therapeutic_quote
                 quote = generate_therapeutic_quote()
                 return render_template('index.html', user=user, conversation=last_conversation, quote=quote)
             except Exception as e:
