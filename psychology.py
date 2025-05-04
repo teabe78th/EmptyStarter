@@ -364,33 +364,63 @@ def get_emotional_intelligence_score(analysis):
     # Podstawowe punkty za samą aktywność
     score = 20
     
-    # Oblicz punktację dla cech osobowości
+    # Oblicz szczegółową punktację dla cech osobowości
     traits = analysis.get("personality_traits", [])
     personality_scores = {}
+    trait_weights = {
+        "samoświadomość": 1.2,
+        "empatia": 1.3,
+        "refleksyjność": 1.1,
+        "otwartość": 1.15,
+        "stabilność": 1.25,
+        "adaptacyjność": 1.1,
+        "asertywność": 1.05
+    }
+    
     for trait in traits:
-        # Generuj wynik 1-100 dla każdej cechy
-        score_value = random.randint(60, 100)  # Losowy wynik między 60-100
-        personality_scores[trait] = score_value
+        # Generuj bazowy wynik
+        base_score = random.randint(65, 95)
+        # Zastosuj wagi dla znanych cech
+        weight = trait_weights.get(trait.lower(), 1.0)
+        final_score = min(100, int(base_score * weight))
+        personality_scores[trait] = final_score
     
-    # Dodaj scores do analizy
+    # Dodaj szczegółowe wyniki do analizy
     analysis["trait_scores"] = personality_scores
+    analysis["emotional_intelligence_details"] = {
+        "self_awareness": min(100, sum(score for trait, score in personality_scores.items() if "świadomość" in trait.lower()) or 70),
+        "emotional_regulation": min(100, sum(score for trait, score in personality_scores.items() if "stabilność" in trait.lower() or "kontrola" in trait.lower()) or 65),
+        "social_awareness": min(100, sum(score for trait, score in personality_scores.items() if "empatia" in trait.lower() or "społeczn" in trait.lower()) or 75),
+        "relationship_management": min(100, sum(score for trait, score in personality_scores.items() if "relacje" in trait.lower() or "komunikacja" in trait.lower()) or 70)
+    }
     
-    # Punkty za różnorodność cech osobowości (max 20)
-    personality_score = len(traits) * 4
-    score += min(personality_score, 20)
+    # Punkty za różnorodność i głębokość cech osobowości (max 25)
+    personality_base_score = len(traits) * 3
+    personality_depth_score = sum(1 for score in personality_scores.values() if score > 80) * 2
+    personality_score = min(25, personality_base_score + personality_depth_score)
+    score += personality_score
     
-    # Punkty za wzorce emocjonalne (max 20)
-    emotional_score = len(analysis.get("emotional_patterns", [])) * 4
-    score += min(emotional_score, 20)
+    # Punkty za wzorce emocjonalne z uwzględnieniem złożoności (max 25)
+    emotional_patterns = analysis.get("emotional_patterns", [])
+    emotional_complexity_score = len([pattern for pattern in emotional_patterns if len(pattern.split()) > 3]) * 2
+    emotional_score = min(25, len(emotional_patterns) * 3 + emotional_complexity_score)
+    score += emotional_score
     
-    # Punkty za wzorce poznawcze (max 15)
-    cognitive_score = len(analysis.get("cognitive_patterns", [])) * 3
-    score += min(cognitive_score, 15)
+    # Punkty za wzorce poznawcze z oceną głębokości (max 25)
+    cognitive_patterns = analysis.get("cognitive_patterns", [])
+    cognitive_depth_score = len([pattern for pattern in cognitive_patterns if "rozumienie" in pattern.lower() or "świadomość" in pattern.lower()]) * 3
+    cognitive_score = min(25, len(cognitive_patterns) * 2 + cognitive_depth_score)
+    score += cognitive_score
     
-    # Punkty za wglądy i obszary rozwoju (max 25)
-    insight_score = len(analysis.get("insights", [])) * 3
-    growth_score = len(analysis.get("growth_areas", [])) * 2
-    score += min(insight_score + growth_score, 25)
+    # Punkty za wglądy i obszary rozwoju z oceną jakościową (max 25)
+    insights = analysis.get("insights", [])
+    growth_areas = analysis.get("growth_areas", [])
+    
+    insight_quality_score = len([insight for insight in insights if len(insight.split()) > 8]) * 2
+    growth_quality_score = len([area for area in growth_areas if len(area.split()) > 6]) * 2
+    
+    development_score = min(25, len(insights) * 2 + len(growth_areas) * 2 + insight_quality_score + growth_quality_score)
+    score += development_score
     
     # Ogranicz wynik do zakresu 0-100
     return max(0, min(score, 100))
