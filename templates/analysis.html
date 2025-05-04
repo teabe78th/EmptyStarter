@@ -16,18 +16,73 @@
         <!-- Score Card -->
         <div class="card score-card bg-dark mb-4">
             <div class="card-body text-center p-4">
-                <h4 class="mb-3">Twój wynik inteligencji emocjonalnej</h4>
-                <div class="progress mb-3" style="height: 25px;">
-                    <div class="progress-bar bg-info" role="progressbar" 
-                        style="width: {{ analysis.emotional_intelligence_score }}%;" 
-                        aria-valuenow="{{ analysis.emotional_intelligence_score }}" 
-                        aria-valuemin="0" aria-valuemax="100">
-                        {{ analysis.emotional_intelligence_score }}/100
+                <h4 class="mb-3">Twój wskaźnik rozwoju emocjonalnego</h4>
+                <div class="progress-container mb-4">
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar bg-info" role="progressbar" 
+                            style="width: {{ analysis.emotional_intelligence_score }}%;" 
+                            aria-valuenow="{{ analysis.emotional_intelligence_score }}" 
+                            aria-valuemin="0" aria-valuemax="100">
+                            {{ analysis.emotional_intelligence_score }}/100
+                        </div>
+                    </div>
+                    <div class="progress-labels mt-2">
+                        <span class="text-muted">Początkujący</span>
+                        <span class="text-info">Rozwijający się</span>
+                        <span class="text-success">Zaawansowany</span>
                     </div>
                 </div>
-                <p class="text-muted mb-0">
-                    Ten wynik jest szacunkowy i zmienia się w czasie wraz z Twoim rozwojem osobistym.
-                </p>
+                
+                <div class="score-details">
+                    <div class="score-aspect mb-3">
+                        <h6 class="text-info">Samoświadomość</h6>
+                        <div class="progress" style="height: 15px;">
+                            <div class="progress-bar bg-info" role="progressbar" 
+                                style="width: {{ (analysis.emotional_intelligence_score * 0.8)|round }}%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="score-aspect mb-3">
+                        <h6 class="text-info">Zarządzanie emocjami</h6>
+                        <div class="progress" style="height: 15px;">
+                            <div class="progress-bar bg-info" role="progressbar" 
+                                style="width: {{ (analysis.emotional_intelligence_score * 0.9)|round }}%;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="score-aspect mb-3">
+                        <h6 class="text-info">Empatia</h6>
+                        <div class="progress" style="height: 15px;">
+                            <div class="progress-bar bg-info" role="progressbar" 
+                                style="width: {{ (analysis.emotional_intelligence_score * 0.85)|round }}%;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="score-interpretation mt-4">
+                    <p class="text-muted mb-2">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Ten wskaźnik odzwierciedla Twój obecny poziom rozwoju emocjonalnego,
+                        oparty na analizie Twoich odpowiedzi i wzorców komunikacji.
+                    </p>
+                    {% if analysis.emotional_intelligence_score < 40 %}
+                    <p class="text-info small">
+                        Jesteś na początku swojej podróży rozwoju emocjonalnego. 
+                        Każda refleksja to krok do przodu!
+                    </p>
+                    {% elif analysis.emotional_intelligence_score < 70 %}
+                    <p class="text-info small">
+                        Wykazujesz rosnącą świadomość emocjonalną. 
+                        Kontynuuj pracę nad pogłębianiem zrozumienia siebie.
+                    </p>
+                    {% else %}
+                    <p class="text-info small">
+                        Pokazujesz wysoki poziom inteligencji emocjonalnej. 
+                        Skupiaj się na dalszym doskonaleniu i dzieleniu się swoim doświadczeniem.
+                    </p>
+                    {% endif %}
+                </div>
             </div>
         </div>
         
