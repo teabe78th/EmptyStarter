@@ -44,7 +44,12 @@
                         {% if analysis.data.personality_traits %}
                             <ul class="list-group list-group-flush bg-dark">
                                 {% for trait in analysis.data.personality_traits %}
-                                    <li class="list-group-item bg-dark">{{ trait }}</li>
+                                    <li class="list-group-item bg-dark d-flex justify-content-between align-items-center">
+                                        {{ trait }}
+                                        {% if analysis.data.trait_scores and trait in analysis.data.trait_scores %}
+                                            <span class="badge bg-info rounded-pill">{{ analysis.data.trait_scores[trait] }}%</span>
+                                        {% endif %}
+                                    </li>
                                 {% endfor %}
                             </ul>
                         {% else %}

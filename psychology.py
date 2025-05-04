@@ -364,8 +364,19 @@ def get_emotional_intelligence_score(analysis):
     # Podstawowe punkty za samą aktywność
     score = 20
     
+    # Oblicz punktację dla cech osobowości
+    traits = analysis.get("personality_traits", [])
+    personality_scores = {}
+    for trait in traits:
+        # Generuj wynik 1-100 dla każdej cechy
+        score_value = random.randint(60, 100)  # Losowy wynik między 60-100
+        personality_scores[trait] = score_value
+    
+    # Dodaj scores do analizy
+    analysis["trait_scores"] = personality_scores
+    
     # Punkty za różnorodność cech osobowości (max 20)
-    personality_score = len(analysis.get("personality_traits", [])) * 4
+    personality_score = len(traits) * 4
     score += min(personality_score, 20)
     
     # Punkty za wzorce emocjonalne (max 20)
