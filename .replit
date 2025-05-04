@@ -1,5 +1,7 @@
+modules = ["python-3.11"]
 [nix]
-packages = ["unzipNLS"]
+packages = ["cairo", "ffmpeg-full", "freetype", "ghostscript", "gobject-introspection", "gtk3", "pkg-config", "qhull", "tcl", "tk", "unzipNLS"]
+channel = "stable-24_05"
 
 [deployment]
 run = ["sh", "-c", "python main.py"]
@@ -15,3 +17,7 @@ mode = "sequential"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "python main.py"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
