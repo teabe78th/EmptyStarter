@@ -4,6 +4,15 @@
 <div class="therapy-container py-3">
     {% if session.get('user_id') %}
         {% if conversation %}
+            <!-- Therapeutic Quote -->
+            <div class="card bg-dark mb-4">
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0 text-center">
+                        <p class="font-italic text-info">{{ quote }}</p>
+                    </blockquote>
+                </div>
+            </div>
+
             <!-- Daily Question Card -->
             <div class="card question-card shadow-sm mb-4">
                 <div class="card-body p-4">
@@ -11,7 +20,7 @@
                         <i class="fas fa-lightbulb me-2"></i>Twoje dzisiejsze pytanie
                     </h5>
                     <p class="question-text mb-4">{{ conversation.question }}</p>
-                    
+
                     {% if conversation.response %}
                         <div class="card bg-dark mb-3">
                             <div class="card-body">
@@ -58,7 +67,7 @@
                     {% endif %}
                 </div>
             </div>
-            
+
             <!-- Tips Section -->
             <div class="card bg-dark mt-5">
                 <div class="card-body p-4">
@@ -106,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Feature 2 -->
             <div class="col-md-4">
                 <div class="card h-100 bg-dark">
@@ -117,7 +126,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Feature 3 -->
             <div class="col-md-4">
                 <div class="card h-100 bg-dark">
