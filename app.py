@@ -229,6 +229,12 @@ def analysis():
     latest_analysis = None
     if not regenerate:
         latest_analysis = PsychologicalAnalysis.query.filter_by(user_id=user_id).order_by(PsychologicalAnalysis.timestamp.desc()).first()
+        
+        # Sprawdź czy analiza jest aktualna (nie starsza niż ostatnia odpowiedź)
+        if latest_analysis:
+            last_response = Conversation.query.filter_by(user_id=user_id, response=None).order_by(Conversation.timestamp.desc()).first()
+            if last_response and last_response.timestamp > latest_analysis.timestamp:
+                latest_analysis = None  # Wymusi nową analizę
 
     # Jeśli nie mamy analizy lub chcemy ją zregenerować
     if not latest_analysis or regenerate:

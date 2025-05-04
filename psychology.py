@@ -362,16 +362,24 @@ def get_emotional_intelligence_score(analysis):
         return 0
     
     # Podstawowe punkty za samą aktywność
-    score = 50
+    score = 20
     
-    # Dodatkowe punkty za różnorodność cech i wzorców
-    score += min(len(analysis.get("personality_traits", [])) * 5, 10)
-    score += min(len(analysis.get("emotional_patterns", [])) * 5, 10)
-    score += min(len(analysis.get("cognitive_patterns", [])) * 5, 10)
+    # Punkty za różnorodność cech osobowości (max 20)
+    personality_score = len(analysis.get("personality_traits", [])) * 4
+    score += min(personality_score, 20)
     
-    # Punkty za spostrzeżenia i obszary rozwoju
-    score += min(len(analysis.get("insights", [])) * 5, 10)
-    score += min(len(analysis.get("growth_areas", [])) * 5, 10)
+    # Punkty za wzorce emocjonalne (max 20)
+    emotional_score = len(analysis.get("emotional_patterns", [])) * 4
+    score += min(emotional_score, 20)
+    
+    # Punkty za wzorce poznawcze (max 15)
+    cognitive_score = len(analysis.get("cognitive_patterns", [])) * 3
+    score += min(cognitive_score, 15)
+    
+    # Punkty za wglądy i obszary rozwoju (max 25)
+    insight_score = len(analysis.get("insights", [])) * 3
+    growth_score = len(analysis.get("growth_areas", [])) * 2
+    score += min(insight_score + growth_score, 25)
     
     # Ogranicz wynik do zakresu 0-100
     return max(0, min(score, 100))
